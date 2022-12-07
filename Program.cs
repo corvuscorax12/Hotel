@@ -15,7 +15,7 @@ namespace Hotel
             try
             {
                 conn = new MySqlConnection(connstring);
-                CheckIn checkIn = new CheckIn(conn);
+                Accounts checkIn = new Accounts(conn);
                 while (true)
                 {
                     Write("New Client? (y/n):");

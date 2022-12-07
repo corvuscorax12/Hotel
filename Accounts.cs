@@ -1,23 +1,18 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
+﻿using MySql.Data.MySqlClient;
 using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Hotel
 {
-    internal class CheckIn
+    internal class Accounts
     {
         string firstName;
         string lastName;
         string address;
         string phoneNumber;
+        string email;
         MySqlConnection connection;
-        public CheckIn(MySqlConnection Connection)
+        public Accounts(MySqlConnection Connection)
         {
             connection = Connection;
             connection.Open();
@@ -27,35 +22,33 @@ namespace Hotel
 
             Console.Write("Enter First Name:");
             firstName = Console.ReadLine();
-            Console.Clear();
 
             Console.Write("Enter Last Name:");
             lastName = Console.ReadLine();
-            Console.Clear();
 
             Console.Write("Enter Address Name:");
             address = Console.ReadLine();
-            Console.Clear();
 
             Console.Write("Enter Phone Number:");
             phoneNumber = Console.ReadLine();
-            Console.Clear();
-            string roomNum;           
+
+            Console.Write("Enter Email Address");
+            email = Console.ReadLine();
         }
 
-        public void ApplyInfo( )
+        public void ApplyInfo()
         {
-            string insertString = string.Empty; 
+            string insertString = string.Empty;
 
-        
 
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandText = "insert into clients (FirstName,LastName,Phone,Address)" +
-                    $"values('{firstName}','{lastName}','{phoneNumber}','{address}');";
-                cmd.Connection = connection;
-                cmd.CommandType = CommandType.Text;
-                cmd.ExecuteNonQuery();
-       
+
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandText = "insert into clients (FirstName,LastName,Phone,Address,email)" +
+                $"values('{firstName}','{lastName}','{phoneNumber}','{address}','{email}');";
+            cmd.Connection = connection;
+            cmd.CommandType = CommandType.Text;
+            cmd.ExecuteNonQuery();
+
 
         }
 
@@ -67,11 +60,11 @@ namespace Hotel
             string searchTerm;
             Console.Write("Enter Last Name:");
             searchTerm = Console.ReadLine();
-            cmd.CommandText = $"select * from clients where LastName ='{searchTerm}';";
+            cmd.CommandText = $"select * from clients where LastName  like '{searchTerm}%';";
             MySqlDataReader reader = cmd.ExecuteReader();
             cmd.Connection = connection;
-           
-            while(reader.Read() ) 
+
+            while (reader.Read())
             {
                 str += reader.GetString("FirstName");
                 str += "\t";
@@ -80,10 +73,16 @@ namespace Hotel
                 str += reader.GetString("Phone");
                 str += "\t";
                 str += reader.GetString("Address");
+                str += "\t";
+                str += reader.GetString("Email");
                 str += "\n";
+
             }
             reader.Close();
             Console.WriteLine(str);
         }
+
+
+
     }
 }
