@@ -70,6 +70,7 @@ namespace Hotel
             cmd.CommandText = $"select * from clients where LastName ='{searchTerm}';";
             MySqlDataReader reader = cmd.ExecuteReader();
             cmd.Connection = connection;
+           
             while(reader.Read() ) 
             {
                 str += reader.GetString("FirstName");
@@ -81,7 +82,7 @@ namespace Hotel
                 str += reader.GetString("Address");
                 str += "\n";
             }
-            
+            reader.Close();
             Console.WriteLine(str);
         }
     }

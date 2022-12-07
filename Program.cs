@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Text;
 using MySql.Data.MySqlClient;
 using static System.Console;
@@ -38,7 +37,7 @@ namespace Hotel
 
             }
 
-            catch (Exception)
+            catch (MySqlException)
             {
                 WriteLine("DOH!");
                 throw;
